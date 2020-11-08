@@ -22,8 +22,8 @@ houses = []
 
 
 # Getting coordinates of each house point from the 'plan'
-for x, row in enumerate(plan):
-    for y, value in enumerate(row):
+for y, row in enumerate(plan):
+    for x, value in enumerate(row):
         if value >= 10.0 and value <= 250.0:
             houses_info.append([int(x), int(y), int(value)])
 
@@ -64,8 +64,8 @@ len(practicetwo)
 
 
 # Getting coordinates of pub point from the 'plan' and appending to a list of tuples 
-for x, row in enumerate(plan):
-    for y, value in enumerate(row):
+for y, row in enumerate(plan):
+    for x, value in enumerate(row):
         if value == 1.0:
             pub_info.append((int(x), int(y)))
 len(pub_info)
@@ -81,6 +81,7 @@ for key, value in houses_info_dict.items():
 
 for house in houses:
     for coord in house.coords:
-        plt.scatter(coord[0], coord[1], s=0.1, c="b")
+        plt.scatter(coord[0], coord[1], s=0.1, c='g')
 
-
+for row in pub_info:
+    plt.scatter(row[0], row[1], s=0.1, c='r')
