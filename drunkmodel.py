@@ -2,6 +2,7 @@ import csv
 import matplotlib
 import matplotlib.pyplot as plt 
 import drunkclass
+import matplotlib.patches as patches
 
 plan = []
 f = open('drunk.plan.txt', newline = '')
@@ -9,8 +10,8 @@ reader = csv.reader(f, quoting = csv.QUOTE_NONNUMERIC)
 plan = list(reader)
 f.close()
 
-len(plan)
-len(plan[0])
+y_len = len(plan)
+x_len = len(plan[0])
 
 plt.imshow(plan)
 plt.show()
@@ -78,10 +79,48 @@ for key, value in houses_info_dict.items():
     coords = value   
     houses.append(drunkclass.House(number, coords))
 
+# Make the pub 
+pub = drunkclass.Pub(pub_info)
+
+
+# Plot to test coordinates look correct 
+# y axis appears reversed from original 'plan' as the 0 is now at the bottom 
+# for house in houses:
+#     for coord in house.coords:
+#         plt.scatter(coord[0], coord[1], s=0.1, c='g')
+
+# for coord in pub.coords:
+#     plt.scatter(coord[0], coord[1], s=0.1, c='r')
+
+
+# Gathering information for plotting the houses and pub 
+housebuild = []
 
 for house in houses:
-    for coord in house.coords:
-        plt.scatter(coord[0], coord[1], s=0.1, c='g')
+    housebuild.append(house.build())
 
-for row in pub_info:
-    plt.scatter(row[0], row[1], s=0.1, c='r')
+pubbuild = pub.build()
+
+# Testing points 
+for coords in housebuild:
+    plt.scatter(coords[0][0], coords[0][1], s=1)
+    plt.scatter(coords[1][0], coords[1][1], s=1)
+
+plt.scatter(pubbuild[0][0], pubbuild[0][1], s=1, c="r")
+plt.scatter(pubbuild[1][0], pubbuild[1][1], s=1, c='r')
+
+
+# line 110 was taken from below website 
+# https://stackoverflow.com/questions/37435369/matplotlib-how-to-draw-a-rectangle-on-image
+fig, ax = plt.subplots()
+
+for coords in housebuild:
+    house_outline = plt.Rectangle((coords[0][0], coords[0][1]), coords[2], coords[3], fill=False)
+    ax.add_patch(house_outline)
+
+pub_outline = plt.Rectangle((pubbuild[0][0], pubbuild[0][1]), pubbuild[2], pubbuild[3], fill=False, color='r')
+ax.add_patch(pub_outline)
+
+ax.autoscale_view()
+
+
