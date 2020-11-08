@@ -20,7 +20,7 @@ class House():
         height = maxy - miny
         binfo = [(minx, miny), (maxx, maxy), width, height]
         return binfo
-        
+    
 
 class Pub():
     def __init__(self, coords):

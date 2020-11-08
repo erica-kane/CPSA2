@@ -121,6 +121,7 @@ for coords in housebuild:
 pub_outline = plt.Rectangle((pubbuild[0][0], pubbuild[0][1]), pubbuild[2], pubbuild[3], fill=False, color='r')
 ax.add_patch(pub_outline)
 
+plt.axis('square')
 ax.autoscale_view()
 
 
