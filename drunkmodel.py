@@ -97,9 +97,7 @@ plt.scatter(pubbuild[1][0], pubbuild[1][1], s=1, c='r')
 fig, ax = plt.subplots()
 
 for house in houses:
-    house_outline = plt.Rectangle(house.bl, house.width, house.height, fill=False)
-    ax.add_patch(house_outline)
-    plt.scatter(house.door[0], house.door[1], marker='s', s=1, c='k')
+    house.draw(fig, ax)
 
 pub_outline = plt.Rectangle((pubbuild[0][0], pubbuild[0][1]), pubbuild[2], pubbuild[3], fill=False, color='r')
 ax.add_patch(pub_outline)

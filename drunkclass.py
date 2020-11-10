@@ -34,13 +34,10 @@ class House():
         doorx = minx + (self.width/2)
         self.door = (doorx, doory)
 
-    # def draw(self):
-    #     info = self.build
-    #     fig, ax = plt.subplots()
-    #     house_outline = plt.Rectangle((info[0][0], info[0][1]), info[2], info[3], fill=False)
-    #     ax.add_patch(house_outline)
-    #     plt.axis('square')
-    #     ax.autoscale_view()
+    def draw(self, fig, ax):
+        house_outline = plt.Rectangle(self.bl, self.width, self.height, fill=False)
+        ax.add_patch(house_outline)
+        plt.scatter(self.door[0], self.door[1], marker='s', s=1, c='k')
 
 
 class Pub():
