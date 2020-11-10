@@ -3,6 +3,7 @@ import matplotlib
 import matplotlib.pyplot as plt 
 import drunkclass
 import matplotlib.patches as patches
+import random
 
 plan = []
 f = open('drunk.plan.txt', newline = '')
@@ -74,37 +75,18 @@ len(pub_info)
 
 
 # Make the houses 
-for key, value in houses_info_dict.items():
-    number = key
-    coords = value   
+for number, coords in houses_info_dict.items():
     houses.append(drunkclass.House(number, coords))
 
 # Make the pub 
 pub = drunkclass.Pub(pub_info)
 
-
-# Plot to test coordinates look correct 
-# y axis appears reversed from original 'plan' as the 0 is now at the bottom 
-# for house in houses:
-#     for coord in house.coords:
-#         plt.scatter(coord[0], coord[1], s=0.1, c='g')
-
-# for coord in pub.coords:
-#     plt.scatter(coord[0], coord[1], s=0.1, c='r')
-
-
-# Gathering information for plotting the houses and pub 
-housebuild = []
-
-for house in houses:
-    housebuild.append(house.build())
-
 pubbuild = pub.build()
 
 # Testing points 
-for coords in housebuild:
-    plt.scatter(coords[0][0], coords[0][1], s=1)
-    plt.scatter(coords[1][0], coords[1][1], s=1)
+for house in houses:
+    plt.scatter(house.bl[0], house.bl[1], s=1)
+    plt.scatter(house.tr[0], house.tr[1], s=1)
 
 plt.scatter(pubbuild[0][0], pubbuild[0][1], s=1, c="r")
 plt.scatter(pubbuild[1][0], pubbuild[1][1], s=1, c='r')
@@ -114,12 +96,14 @@ plt.scatter(pubbuild[1][0], pubbuild[1][1], s=1, c='r')
 # https://stackoverflow.com/questions/37435369/matplotlib-how-to-draw-a-rectangle-on-image
 fig, ax = plt.subplots()
 
-for coords in housebuild:
-    house_outline = plt.Rectangle((coords[0][0], coords[0][1]), coords[2], coords[3], fill=False)
+for house in houses:
+    house_outline = plt.Rectangle(house.bl, house.width, house.height, fill=False)
     ax.add_patch(house_outline)
+    plt.scatter(house.door[0], house.door[1], marker='s', s=1, c='k')
 
 pub_outline = plt.Rectangle((pubbuild[0][0], pubbuild[0][1]), pubbuild[2], pubbuild[3], fill=False, color='r')
 ax.add_patch(pub_outline)
+plt.scatter(pubbuild[4][0], pubbuild[4][1], marker='s', s=1, c='r')
 
 plt.axis('square')
 ax.autoscale_view()
