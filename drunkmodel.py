@@ -1,9 +1,6 @@
 import csv
-import matplotlib
 import matplotlib.pyplot as plt 
 import drunkclass
-import matplotlib.patches as patches
-import random
 
 plan = []
 f = open('drunk.plan.txt', newline = '')
@@ -81,15 +78,13 @@ for number, coords in houses_info_dict.items():
 # Make the pub 
 pub = drunkclass.Pub(pub_info)
 
-pubbuild = pub.build()
-
 # Testing points 
 for house in houses:
     plt.scatter(house.bl[0], house.bl[1], s=1)
     plt.scatter(house.tr[0], house.tr[1], s=1)
 
-plt.scatter(pubbuild[0][0], pubbuild[0][1], s=1, c="r")
-plt.scatter(pubbuild[1][0], pubbuild[1][1], s=1, c='r')
+plt.scatter(pub.bl[0], pub.bl[1], s=1, c="r")
+plt.scatter(pub.tr[0], pub.tr[1], s=1, c='r')
 
 
 # line 110 was taken from below website 
@@ -99,9 +94,7 @@ fig, ax = plt.subplots()
 for house in houses:
     house.draw(fig, ax)
 
-pub_outline = plt.Rectangle((pubbuild[0][0], pubbuild[0][1]), pubbuild[2], pubbuild[3], fill=False, color='r')
-ax.add_patch(pub_outline)
-plt.scatter(pubbuild[4][0], pubbuild[4][1], marker='s', s=1, c='r')
+pub.draw(fig, ax)
 
 plt.axis('square')
 ax.autoscale_view()
