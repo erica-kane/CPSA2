@@ -29,6 +29,10 @@ class Building():
         doorx = minx + (self.width/2)
         self.door = (doorx, doory)
 
+        centrex = doorx
+        centrey = miny + (self.height/2)
+        self.centre = (centrex, centrey)
+
 
 class House(Building):
     def __init__(self, number, coords):
@@ -38,13 +42,16 @@ class House(Building):
     def draw(self, fig, ax):
         house_outline = plt.Rectangle(self.bl, self.width, self.height, fill=False)
         ax.add_patch(house_outline)
+        ax.text(self.tr[0], self.tr[1], str(self.number))
         plt.scatter(self.door[0], self.door[1], marker='s', s=1)
+        
 
 
 class Pub(Building):
     def draw(self, fig, ax):
         outline = plt.Rectangle(self.bl, self.width, self.height, fill=False, color='r')
         ax.add_patch(outline)
+        ax.text(self.tr[0], self.tr[1], 'Pub', color = 'r')
         plt.scatter(self.door[0], self.door[1], marker='s', s=1, c='r')
 
 
