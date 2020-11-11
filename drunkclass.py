@@ -54,4 +54,7 @@ class Pub(Building):
         ax.text(self.tr[0], self.tr[1], 'Pub', color = 'r')
         plt.scatter(self.door[0], self.door[1], marker='s', s=1, c='r')
 
-
+class Drunk():
+    def __init__(self, plan, home):
+        self.plan = plan 
+        self.home = home

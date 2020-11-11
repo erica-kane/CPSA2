@@ -18,6 +18,7 @@ houses_info = []
 houses_info_dict = {}
 pub_info = []
 houses = []
+drunks = []
 
 
 # Getting coordinates of each house point from the 'plan'
@@ -78,6 +79,10 @@ for number, coords in houses_info_dict.items():
 # Make the pub 
 pub = drunkclass.Pub(pub_info)
 
+# Create the drunks
+for house in houses:
+    drunks.append(drunkclass.Drunk(plan, house))
+
 # Testing points 
 for house in houses:
     plt.scatter(house.bl[0], house.bl[1], s=1)
@@ -87,7 +92,7 @@ plt.scatter(pub.bl[0], pub.bl[1], s=1, c="r")
 plt.scatter(pub.tr[0], pub.tr[1], s=1, c='r')
 
 
-# line 110 was taken from below website 
+# line below was taken from below website 
 # https://stackoverflow.com/questions/37435369/matplotlib-how-to-draw-a-rectangle-on-image
 fig, ax = plt.subplots()
 
