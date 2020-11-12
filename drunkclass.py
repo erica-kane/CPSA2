@@ -39,12 +39,19 @@ class House(Building):
     def __init__(self, number, coords):
         super().__init__(coords)
         self.number = number
+        yvalues = []
+        for coord in self.coords:
+            yvalues.append(coord[1])
+        doory = max(yvalues)
+        doorx = self.door[0]
+        self.backdoor = (doorx, doory)
 
     def draw(self):
         house_outline = plt.Rectangle(self.bl, self.width, self.height, fill=False)
         plt.gca().add_patch(house_outline)
         plt.gca().text(self.tr[0], self.tr[1], str(self.number))
         plt.scatter(self.door[0], self.door[1], marker='s', s=1, c='k')
+        plt.scatter(self.backdoor[0], self.backdoor[1], marker='s', s=1, c='k')
         
 
 
@@ -69,7 +76,9 @@ class Drunk():
 
 # Find distance between drunk and door 
     def find_distance_home(self):
-        distance = (((self.x - self.home.door[0])**2) + ((self.y - self.home.door[1])**2))**0.5
+        distance_door = (((self.x - self.home.door[0])**2) + ((self.y - self.home.door[1])**2))**0.5
+        distance_backdoor = (((self.x - self.home.backdoor[0])**2) + ((self.y - self.home.backdoor[1])**2))**0.5
+        distance = min(distance_backdoor, distance_door)
         return distance
 
 # Random walk
@@ -110,11 +119,13 @@ class Drunk():
         return (nextx, nexty)
 
     def walk(self):
-        # if self.find_distance_home() >= 100:
-        #     nextx, nexty = self.walk_random()
-        # else:
-        #    nextx, nexty = self.walk_home()
-        nextx, nexty = self.walk_home()
+        if self.find_distance_home() >= 110:
+            nextx, nexty = self.walk_random()
+        else:
+            if random.random() < 0.3:
+                nextx, nexty = self.walk_random()
+            else:
+                nextx, nexty = self.walk_home()
 
 # Boundary check for perimeter 
         if nextx < 0:
@@ -130,6 +141,9 @@ class Drunk():
 # Boundary checking for buildings 
         building_value = self.plan[nexty][nextx]
         if building_value == 0:
+            self.x = nextx
+            self.y = nexty
+        elif (nextx, nexty) == (self.home.door[0], self.home.door[1]):
             self.x = nextx
             self.y = nexty
 
