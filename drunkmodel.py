@@ -2,6 +2,7 @@ import csv
 import matplotlib.pyplot as plt 
 import matplotlib.animation 
 import drunkclass
+import buildingclass
 
 plan = []
 f = open('drunk.plan.txt', newline = '')
@@ -75,10 +76,10 @@ len(pub_info)
 
 # Make the houses 
 for number, coords in houses_info_dict.items():
-    houses.append(drunkclass.House(number, coords))
+    houses.append(buildingclass.House(number, coords))
 
 # Make the pub 
-pub = drunkclass.Pub(pub_info)
+pub = buildingclass.Pub(pub_info)
 
 # Create the drunks
 for house in houses:
