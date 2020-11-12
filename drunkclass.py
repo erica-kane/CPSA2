@@ -40,19 +40,19 @@ class House(Building):
         super().__init__(coords)
         self.number = number
 
-    def draw(self, fig, ax):
+    def draw(self):
         house_outline = plt.Rectangle(self.bl, self.width, self.height, fill=False)
-        ax.add_patch(house_outline)
-        ax.text(self.tr[0], self.tr[1], str(self.number))
+        plt.gca().add_patch(house_outline)
+        plt.gca().text(self.tr[0], self.tr[1], str(self.number))
         plt.scatter(self.door[0], self.door[1], marker='s', s=1, c='k')
         
 
 
 class Pub(Building):
-    def draw(self, fig, ax):
+    def draw(self):
         outline = plt.Rectangle(self.bl, self.width, self.height, fill=False, color='r')
-        ax.add_patch(outline)
-        ax.text(self.tr[0], self.tr[1], 'Pub', color = 'r')
+        plt.gca().add_patch(outline)
+        plt.gca().text(self.tr[0], self.tr[1], 'Pub', color = 'r')
         plt.scatter(self.door[0], self.door[1], marker='s', s=1, c='r')
 
 
@@ -67,8 +67,13 @@ class Drunk():
         self.y_max = len(plan) - 1
         self.x_max = len(plan[0]) - 1
 
+# Find distance between drunk and door 
+    def find_distance_home(self):
+        distance = (((self.x - self.home.door[0])**2) + ((self.y - self.home.door[1])**2))**0.5
+        return distance
 
-    def walk(self):
+# Random walk
+    def walk_random(self):
         if random.random() < 0.5:
             nexty = (self.y + 1)
         else:
@@ -78,8 +83,40 @@ class Drunk():
             nextx = (self.x + 1)
         else:
             nextx = (self.x - 1)
+        return (nextx, nexty)
 
+    def walk_home(self):
+        diff_x = self.home.door[0] - self.x
+        # door to the right
+        if diff_x > 0:
+            nextx = (self.x + 1)
+        # door to the left
+        elif diff_x < 0:
+            nextx = (self.x - 1)
+        # at the door
+        else:
+            nextx = self.x
 
+        diff_y = self.home.door[1] - self.y
+        # door to the bottom
+        if diff_y > 0:
+            nexty = (self.y + 1)
+        # door to the top
+        elif diff_y < 0:
+            nexty = (self.y - 1)
+        # at the door 
+        else:
+            nexty = self.y
+        return (nextx, nexty)
+
+    def walk(self):
+        # if self.find_distance_home() >= 100:
+        #     nextx, nexty = self.walk_random()
+        # else:
+        #    nextx, nexty = self.walk_home()
+        nextx, nexty = self.walk_home()
+
+# Boundary check for perimeter 
         if nextx < 0:
             nextx = 0
         elif nextx > self.x_max:
@@ -90,13 +127,13 @@ class Drunk():
         elif nexty > self.y_max:
             nexty = self.y_max
 
-
+# Boundary checking for buildings 
         building_value = self.plan[nexty][nextx]
         if building_value == 0:
             self.x = nextx
             self.y = nexty
 
-
+# Getting home 
         if self.x == self.home.door[0] and self.y == self.home.door[1]:
             self.drunks.remove(self)
 

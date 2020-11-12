@@ -92,10 +92,10 @@ for house in houses:
 plt.scatter(pub.bl[0], pub.bl[1], s=1, c="r")
 plt.scatter(pub.tr[0], pub.tr[1], s=1, c='r')
 
+# plot
 
-# line below was taken from below website 
-# https://stackoverflow.com/questions/37435369/matplotlib-how-to-draw-a-rectangle-on-image
-fig, ax = plt.subplots()
+fig = matplotlib.pyplot.figure(figsize=(7, 7))
+# ax = fig.add_axes([0, 0, 1, 1])
 
 # for house in houses:
 #     house.draw(fig, ax)
@@ -109,24 +109,24 @@ fig, ax = plt.subplots()
     
 # drunks[0].draw()
 
-plt.axis('square')
-ax.autoscale_view()
+# plt.axis('square')
+# ax.autoscale_view()
 
 def update(frame_number):
-    
+    print("update")
     fig.clear()  
 
     for house in houses:
-        house.draw(fig, ax)
+        house.draw()
     
-    pub.draw(fig, ax)
+    pub.draw()
 
     for drunk in drunks:
         drunk.walk()
         drunk.draw()
 
-
 animation = matplotlib.animation.FuncAnimation(fig, update, interval = 1, repeat = False, frames = 10000)
+
 plt.show()
 
 
