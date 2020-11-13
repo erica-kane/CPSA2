@@ -23,8 +23,9 @@ y_len = len(plan)
 x_len = len(plan[0])
 
 # Picture the plan
-plt.imshow(plan)
+plt.imshow(plan, origin='lower')
 plt.show()
+plt.close()
 
 # Create empty array for heat map which has the same dimensions as plan
 for num in range(y_len):
@@ -47,12 +48,6 @@ for row in houses_info:
 # Appending tuples of x and y values of the houses to the value lists in the dictionary
 for row in houses_info:
     houses_info_dict[row[2]].append((row[0], row[1]))
-
-## Below is first attempt of the above code, also works but is less efficient
-# for key, value in houses_dict.items():
-#     for row in houses:
-#         if row[2] == key:
-#             houses_dict[key].append((row[0], row[1]))
 
 # Check the dictionary by comparing length of each list of coordinates
 # to how many house number 30's there were in houses and plan
@@ -102,6 +97,7 @@ for house in houses:
 
 plt.scatter(pub.bl[0], pub.bl[1], s=1, c="r")
 plt.scatter(pub.tr[0], pub.tr[1], s=1, c='r')
+plt.show()
 plt.close()
 
 
@@ -149,10 +145,12 @@ plt.imshow(scaledmap, cmap='hot', interpolation='nearest', origin="lower")
 for house in houses:
     house.draw(number=False)
 pub.draw(text=False)
+plt.show()
 
 # Write out townmap to a file 
-mapfile = open('mapfile.txt', 'w')
-mapfile.write(str(townmap))
+mapfile = open('townmapfile.csv', "w")
+writer = csv.writer(mapfile)
+writer.writerows(townmap)
 mapfile.close()
 
 
