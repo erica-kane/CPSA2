@@ -3,8 +3,17 @@ import matplotlib.pyplot as plt
 import matplotlib.animation 
 import drunkclass
 import buildingclass
+import numpy as np
 
 plan = []
+houses_info = []
+houses_info_dict = {}
+pub_info = []
+houses = []
+drunks = []
+townmap = []
+
+# Read in town plan
 f = open('drunk.plan.txt', newline = '')
 reader = csv.reader(f, quoting = csv.QUOTE_NONNUMERIC)
 plan = list(reader)
@@ -13,15 +22,16 @@ f.close()
 y_len = len(plan)
 x_len = len(plan[0])
 
+# Picture the plan
 plt.imshow(plan)
 plt.show()
 
-houses_info = []
-houses_info_dict = {}
-pub_info = []
-houses = []
-drunks = []
-
+# Create empty array for heat map which has the same dimensions as plan
+for num in range(y_len):
+    maprow = []
+    for num in range(x_len):
+        maprow.append(0)
+    townmap.append(maprow)
 
 # Getting coordinates of each house point from the 'plan'
 for y, row in enumerate(plan):
@@ -83,7 +93,7 @@ pub = buildingclass.Pub(pub_info)
 
 # Create the drunks
 for house in houses:
-    drunks.append(drunkclass.Drunk(pub.door[0], pub.door[1], drunks, plan, house))
+    drunks.append(drunkclass.Drunk(pub.door[0], pub.door[1], drunks, plan, house, townmap))
 
 # Testing points 
 for house in houses:
@@ -92,42 +102,46 @@ for house in houses:
 
 plt.scatter(pub.bl[0], pub.bl[1], s=1, c="r")
 plt.scatter(pub.tr[0], pub.tr[1], s=1, c='r')
+plt.close()
 
-# plot
 
-fig = matplotlib.pyplot.figure(figsize=(7, 7))
-# ax = fig.add_axes([0, 0, 1, 1])
 
-# for house in houses:
-#     house.draw(fig, ax)
+# # animation code - not necessary for final product but essential in development stages 
+# fig = matplotlib.pyplot.figure(figsize=(7, 7))
 
-# pub.draw(fig, ax)
+# def update(frame_number):
+#     print("update")
+#     fig.clear()  
 
-# drunks[0].draw()
-
-# for num in range(1_000):
-#     drunks[0].walk()
+#     for house in houses:
+#         house.draw()
     
-# drunks[0].draw()
+#     pub.draw()
 
-# plt.axis('square')
-# ax.autoscale_view()
+#     for drunk in drunks:
+#         drunk.walk()
+#         drunk.draw()
 
-def update(frame_number):
-    print("update")
-    fig.clear()  
+# animation = matplotlib.animation.FuncAnimation(fig, update, interval = 1, repeat = False, frames = 10000)
 
-    for house in houses:
-        house.draw()
-    
-    pub.draw()
+# plt.show()
 
+
+
+# plot of heat map, moving drunks and adding to map for as long as there are drunks not home 
+# pritning total to check how many iterations it took 
+total = 0
+while drunks:
+    total += 1
     for drunk in drunks:
         drunk.walk()
-        drunk.draw()
+        drunk.add_to_map()
+print(total)
 
-animation = matplotlib.animation.FuncAnimation(fig, update, interval = 1, repeat = False, frames = 10000)
-
-plt.show()
+scaledmap = np.log(np.array(townmap))
+plt.imshow(scaledmap, cmap='hot', interpolation='nearest', origin="lower")
+for house in houses:
+    house.draw(number=False)
+pub.draw(text=False)
 
 

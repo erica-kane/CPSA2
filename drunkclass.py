@@ -2,12 +2,13 @@ import matplotlib.pyplot as plt
 import random
 
 class Drunk():
-    def __init__(self, x, y, drunks, plan, home):
+    def __init__(self, x, y, drunks, plan, home, townmap):
         self.x = x
         self.y = y
         self.drunks = drunks
         self.plan = plan 
         self.home = home
+        self.townmap = townmap
         self.target = self.home.door
         self.y_max = len(plan) - 1
         self.x_max = len(plan[0]) - 1
@@ -57,7 +58,7 @@ class Drunk():
 
 # Walking route 
     def walk(self):
-        if self.find_distance_target() >= 110:
+        if self.find_distance_target() >= 50:
             if random.random() < 0.1:
                 nextx, nexty = self.walk_home()
             else:
@@ -91,7 +92,7 @@ class Drunk():
             targetx = self.home.door[0] + random.randint(-20, 20)
             targety = self.home.door[1] + random.randint(-20, 20)
             self.target = (targetx, targety)
-        
+
         if (self.x, self.y) == self.target:
             self.target = self.home.door
 
@@ -99,5 +100,10 @@ class Drunk():
         if self.x == self.home.door[0] and self.y == self.home.door[1]:
             self.drunks.remove(self)
 
+# Adding to map when drunk walks in spot 
+    def add_to_map(self):
+        self.townmap[self.y][self.x] += 1
+
     def draw(self):
         plt.scatter(self.x, self.y, c='b')
+

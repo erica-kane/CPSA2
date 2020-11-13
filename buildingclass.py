@@ -36,17 +36,19 @@ class House(Building):
         super().__init__(coords)
         self.number = number
 
-    def draw(self):
+    def draw(self, number=True):
         house_outline = plt.Rectangle(self.bl, self.width, self.height, fill=False)
         plt.gca().add_patch(house_outline)
-        plt.gca().text(self.tr[0], self.tr[1], str(self.number))
+        if number:
+            plt.gca().text(self.tr[0], self.tr[1], str(self.number))
         plt.scatter(self.door[0], self.door[1], marker='s', s=1, c='k')        
 
 
 class Pub(Building):
-    def draw(self):
+    def draw(self, text=True):
         outline = plt.Rectangle(self.bl, self.width, self.height, fill=False, color='r')
         plt.gca().add_patch(outline)
-        plt.gca().text(self.tr[0], self.tr[1], 'Pub', color = 'r')
+        if text:
+            plt.gca().text(self.tr[0], self.tr[1], 'Pub', color = 'r')
         plt.scatter(self.door[0], self.door[1], marker='s', s=1, c='r')
 
