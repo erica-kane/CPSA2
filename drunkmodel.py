@@ -138,10 +138,22 @@ while drunks:
         drunk.add_to_map()
 print(total)
 
+# # To check the add to map worked 
+# for row in townmap:
+#     for value in row:
+#         if value != 0:
+#             print(value)
+
 scaledmap = np.log(np.array(townmap))
 plt.imshow(scaledmap, cmap='hot', interpolation='nearest', origin="lower")
 for house in houses:
     house.draw(number=False)
 pub.draw(text=False)
+
+# Write out townmap to a file 
+mapfile = open('mapfile.txt', 'w')
+mapfile.write(str(townmap))
+mapfile.close()
+
 
 
