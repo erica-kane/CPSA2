@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt 
 import random
 
+# Initialising drunk class with x and y values, and giving access to other drunks, the plan, its home, and the townmap
+# a target is also attributed, and x and y maximum values (both to help with boundary checks)
 class Drunk():
     def __init__(self, x, y, drunks, plan, home, townmap):
         self.x = x
@@ -19,6 +21,7 @@ class Drunk():
         return distance
 
 # Random walk
+# This is one way which a drunk can walk, totally randomly 
     def walk_random(self):
         if random.random() < 0.5:
             nexty = (self.y + 1)
@@ -32,6 +35,7 @@ class Drunk():
         return (nextx, nexty)
 
 # Walking directly home 
+# The second way a drunk can walk, direclty to their door 
     def walk_home(self):
         diff_x = self.target[0] - self.x
         # door to the right
@@ -57,6 +61,8 @@ class Drunk():
         return (nextx, nexty)
 
 # Walking route 
+# This mixes both walking methods depending on distance. More random when further away
+# nextx and nexty values are decided after boundary checks are calculated 
     def walk(self):
         if self.find_distance_target() >= 50:
             if random.random() < 0.1:
@@ -70,6 +76,7 @@ class Drunk():
                 nextx, nexty = self.walk_home()
 
 # Boundary check for perimeter 
+# Pre emptive check, if the drunk will hit a town wall, don't move there 
         if nextx < 0:
             nextx = 0
         elif nextx > self.x_max:
@@ -81,6 +88,12 @@ class Drunk():
             nexty = self.y_max
 
 # Boundary checking for buildings 
+# Pre emptive check, if the drunk will walk somewhere on the plan that is denoted by a 0
+# (aka a building), go there
+# UNLESS the value is the door, in that case the drunk can have access, or
+# if you're going to walk somewhere that isn't denoted by a 0, it is a building and you will be blocked
+# If that is the case, the drunk retargets, moving to a random location within a 40x40 radius of the blockage 
+# After reaching the new target, it sets the target back as door and tries again 
         building_value = self.plan[nexty][nextx]
         if building_value == 0:
             self.x = nextx
@@ -104,6 +117,7 @@ class Drunk():
     def add_to_map(self):
         self.townmap[self.y][self.x] += 1
 
+# Draw (used in the animation)
     def draw(self):
         plt.scatter(self.x, self.y, c='b')
 

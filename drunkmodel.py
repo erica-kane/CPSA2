@@ -5,6 +5,7 @@ import drunkclass
 import buildingclass
 import numpy as np
 
+# Create all objects that will need to be used in further code 
 plan = []
 houses_info = []
 houses_info_dict = {}
@@ -19,38 +20,36 @@ reader = csv.reader(f, quoting = csv.QUOTE_NONNUMERIC)
 plan = list(reader)
 f.close()
 
+# Find and save dimensions of plan 
 y_len = len(plan)
 x_len = len(plan[0])
 
-# Picture the plan
+# Visualise the plan
 plt.imshow(plan, origin='lower')
 plt.show()
 plt.close()
 
-# Create empty array for heat map which has the same dimensions as plan
-for num in range(y_len):
-    maprow = []
-    for num in range(x_len):
-        maprow.append(0)
-    townmap.append(maprow)
-
-# Getting coordinates of each house point from the 'plan'
+# Getting coordinates of each house point from the plan, save to a nested list 
+# The list will contain a set of coordinates for each point on the house, followed by the house number
 for y, row in enumerate(plan):
     for x, value in enumerate(row):
         if value >= 10.0 and value <= 250.0:
             houses_info.append([int(x), int(y), int(value)])
 
 
-# Setting 'house numbers' as the keys of the dictionary, and empty lists as values
+# Setting 'house numbers' as the keys of a dictionary, and empty lists as values
+# Keys must be uniqie, so this solves problem of eliminating repeat house numbers and saving as individual values per house 
 for row in houses_info:
     houses_info_dict[row[2]] = []
     
 # Appending tuples of x and y values of the houses to the value lists in the dictionary
+# This results in a dictionary of keys (house numbers) and associated values (all the coordinates which make up the hosue)
 for row in houses_info:
     houses_info_dict[row[2]].append((row[0], row[1]))
 
+# TEST
 # Check the dictionary by comparing length of each list of coordinates
-# to how many house number 30's there were in houses and plan
+# to how many house number 30's (randomly selected) there were in houses_info and plan
 for key, value in houses_info_dict.items():
     print(len(value))
 
@@ -71,6 +70,7 @@ len(practicetwo)
 
 
 # Getting coordinates of pub point from the 'plan' and appending to a list of tuples 
+# A dictionary is not needed as there is only one pub, so no associated number is necessary
 for y, row in enumerate(plan):
     for x, value in enumerate(row):
         if value == 1.0:
@@ -86,11 +86,8 @@ for number, coords in houses_info_dict.items():
 # Make the pub 
 pub = buildingclass.Pub(pub_info)
 
-# Create the drunks
-for house in houses:
-    drunks.append(drunkclass.Drunk(pub.door[0], pub.door[1], drunks, plan, house, townmap))
-
-# Testing points 
+# TEST
+# Plotting bottom left and top right points of houses to ensure the information is correct 
 for house in houses:
     plt.scatter(house.bl[0], house.bl[1], s=1)
     plt.scatter(house.tr[0], house.tr[1], s=1)
@@ -101,8 +98,13 @@ plt.show()
 plt.close()
 
 
+# Create the drunks
+for house in houses:
+    drunks.append(drunkclass.Drunk(pub.door[0], pub.door[1], drunks, plan, house, townmap))
 
-# # animation code - not necessary for final product but essential in development stages 
+# # TEST
+# # Animation code - not necessary for final product but essential in development stages 
+
 # fig = matplotlib.pyplot.figure(figsize=(7, 7))
 
 # def update(frame_number):
@@ -123,8 +125,14 @@ plt.close()
 # plt.show()
 
 
+# Create empty array for heat map which has the same dimensions as plan
+for num in range(y_len):
+    maprow = []
+    for num in range(x_len):
+        maprow.append(0)
+    townmap.append(maprow)
 
-# plot of heat map, moving drunks and adding to map for as long as there are drunks not home 
+# moving drunks and adding to townmap for each movement, for as long as there are drunks not home 
 # pritning total to check how many iterations it took 
 total = 0
 while drunks:
@@ -134,12 +142,15 @@ while drunks:
         drunk.add_to_map()
 print(total)
 
+# # TEST
 # # To check the add to map worked 
 # for row in townmap:
 #     for value in row:
 #         if value != 0:
 #             print(value)
 
+# Plot the heat map using a numpy array version of townmap
+# The logarithm of townmap is calculated to scale the values resulting in a more visually appealing map 
 scaledmap = np.log(np.array(townmap))
 plt.imshow(scaledmap, cmap='hot', interpolation='nearest', origin="lower")
 for house in houses:
@@ -147,7 +158,7 @@ for house in houses:
 pub.draw(text=False)
 plt.show()
 
-# Write out townmap to a file 
+# Write out townmap to a csv file 
 mapfile = open('townmapfile.csv', "w")
 writer = csv.writer(mapfile)
 writer.writerows(townmap)
