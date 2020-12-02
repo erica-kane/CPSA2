@@ -28,9 +28,9 @@ class Drunk():
             x (number): x coordinate 
             y (number): y coordinate
             drunks (list): list of all drunks 
-            plan (nested list): the given environment 
-            home (class): the House to which the drunk is attributed 
-            townmap (nested list): map of movements made 
+            plan (2D list): the given environment 
+            home (House): the House to which the drunk is attributed 
+            townmap (2D list): map of movements made 
         """
         self.x = x
         self.y = y
@@ -102,6 +102,8 @@ class Drunk():
         """Moves the drunk 90% randomly if the distance to their door is more than or equal to 50.
         Moves the drunk 30% randomly if the distance to their door is less than 50. 
         Makes a boundary check for the perimeter and houses so drunks don't walk through buildings.
+        Re-targets if the drunk gets stuck on a perimeter.
+        Removes drunk from list once it reaches its door. 
         """
         if self.find_distance_target() >= 50:
             if random.random() < 0.1:

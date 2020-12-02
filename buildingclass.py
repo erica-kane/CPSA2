@@ -9,7 +9,7 @@ class Building():
         """Initilaising buildings with a set of coordinates. 
 
         Args:
-            coords (list): Nested list of tuples containing x and y coordinates.
+            coords (list): List of tuples containing x and y coordinates.
         """
         self.coords = coords
         self.build()
@@ -74,6 +74,7 @@ class House(Building):
         Args:
             number (bool, optional): Controls whether the house numbers should be drawn. Defaults to True.
         """
+
         house_outline = plt.Rectangle(self.bl, self.width, self.height, fill=False)
         plt.gca().add_patch(house_outline)
         if number:
@@ -83,10 +84,16 @@ class House(Building):
 
 class Pub(Building):
     """Pub subclass
-
-    Args:
-        Building (superclass): initialised with superclass __init__
     """
+    def __init__(self, coords):
+        """Pub subclass
+
+        Args:
+            coords (list): List of coordinates as tuples. 
+        """
+        print("Building pub")
+        super().__init__(coords)
+        
     def draw(self, text=True):
         """Draws the pub.
         Adds on to the current plt plot.
@@ -94,6 +101,7 @@ class Pub(Building):
         Args:
             text (bool, optional): Controls whether the label for the pub should be drawn. Defaults to True.
         """
+
         outline = plt.Rectangle(self.bl, self.width, self.height, fill=False, color='r')
         plt.gca().add_patch(outline)
         if text:
