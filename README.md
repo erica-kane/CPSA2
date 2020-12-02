@@ -42,7 +42,7 @@ The project requires the user to download the following files:
 ### How to run 
 
 ```
-drunkmodel.py
+python drunkmodel.py
 ```
 
 Ensure you have the numpy and matplotlib libraries installed
@@ -61,6 +61,19 @@ A file will be saved in the working directory titled 'townmapfile.csv'.
 This is the information which forms the heat map as text. 
 
 _Please note that the figures can only be viewed one by one, and you must close one for the next to open_ 
+
+
+## Tests
+
+
+Tests are provided as doctests 
+
+
+### How to test 
+
+```
+python -m doctest buildingclass.py
+```
 
 
 ## License
