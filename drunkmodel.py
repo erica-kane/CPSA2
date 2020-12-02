@@ -47,7 +47,6 @@ for row in houses_info:
 for row in houses_info:
     houses_info_dict[row[2]].append((row[0], row[1]))
 
-# TEST
 # Check the dictionary by comparing length of each list of coordinates
 # to how many house number 30's (randomly selected) there were in houses_info and plan
 for key, value in houses_info_dict.items():
@@ -86,7 +85,6 @@ for number, coords in houses_info_dict.items():
 # Make the pub 
 pub = buildingclass.Pub(pub_info)
 
-# TEST
 # Plotting bottom left and top right points of houses to ensure the information is correct 
 for house in houses:
     plt.scatter(house.bl[0], house.bl[1], s=1)
@@ -102,7 +100,6 @@ plt.close()
 for house in houses:
     drunks.append(drunkclass.Drunk(pub.door[0], pub.door[1], drunks, plan, house, townmap))
 
-# # TEST
 # # Animation code - not necessary for final product but essential in development stages 
 
 # fig = matplotlib.pyplot.figure(figsize=(7, 7))
@@ -140,9 +137,8 @@ while drunks:
     for drunk in drunks:
         drunk.walk()
         drunk.add_to_map()
-print(total)
+print(f"total number of iterations for all drunks to get home: {total}")
 
-# # TEST
 # # To check the add to map worked 
 # for row in townmap:
 #     for value in row:
