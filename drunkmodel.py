@@ -76,6 +76,7 @@ plt.scatter(pub.bl[0], pub.bl[1], s=1, c="r")
 plt.scatter(pub.tr[0], pub.tr[1], s=1, c='r')
 plt.gca().text(pub.tr[0], pub.tr[1], 'Pub', color = 'r')
 plt.title("Bottom left and top right points of each building")
+plt.axis('square')
 plt.show()
 plt.close()
 
@@ -139,6 +140,4 @@ mapfile = open('townmapfile.csv', "w")
 writer = csv.writer(mapfile)
 writer.writerows(townmap)
 mapfile.close()
-
-
 
