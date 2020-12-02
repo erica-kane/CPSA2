@@ -9,23 +9,23 @@ drunks. These paths show movements made by the drunks whilst navigating their wa
 
 The project requires the user to download the following files:
 
-### drunk.plan.txt
+**drunk.plan.txt**
 
 - A 300 x 300 town plan 
 
 
-### buildingclass.py
+**buildingclass.py**
 
 - Defines the building super class 
 - Defines the pub and house sub classes 
 
 
-### drunkclass.py 
+**drunkclass.py** 
 
 - Defines the drunk class 
 
 
-### drunkmodel.py 
+**drunkmodel.py** 
 
 - Sets up and runs the model:
 
@@ -73,6 +73,10 @@ Tests are provided as doctests
 
 ```
 python -m doctest buildingclass.py
+```
+
+```
+python -m doctest drunkclass.py
 ```
 
 
