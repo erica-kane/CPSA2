@@ -26,6 +26,7 @@ x_len = len(plan[0])
 
 # Visualise the plan
 plt.imshow(plan, origin='lower')
+plt.title("Original town plan visualisation")
 plt.show()
 plt.close()
 
@@ -47,26 +48,6 @@ for row in houses_info:
 for row in houses_info:
     houses_info_dict[row[2]].append((row[0], row[1]))
 
-# Check the dictionary by comparing length of each list of coordinates
-# to how many house number 30's (randomly selected) there were in houses_info and plan
-for key, value in houses_info_dict.items():
-    print(len(value))
-
-practice = []
-for row in houses_info:
-    if row[2] == 30:
-        practice.append(row[2])
-len(practice)       
-
-practicetwo = []
-for row in plan:
-    for value in row:
-        if value == 240:
-            practicetwo.append(value)
-len(practicetwo)
-
-# All show 121 coordinates per house, which suggests an 11x11 area
-
 
 # Getting coordinates of pub point from the 'plan' and appending to a list of tuples 
 # A dictionary is not needed as there is only one pub, so no associated number is necessary
@@ -75,7 +56,7 @@ for y, row in enumerate(plan):
         if value == 1.0:
             pub_info.append((int(x), int(y)))
 len(pub_info)
-# length 441, suggesting 21x21 grid 
+# length 441, suggesting 20x20 grid 
 
 
 # Make the houses 
@@ -85,13 +66,16 @@ for number, coords in houses_info_dict.items():
 # Make the pub 
 pub = buildingclass.Pub(pub_info)
 
-# Plotting bottom left and top right points of houses to ensure the information is correct 
+# Plotting bottom left, top right, numbers and labels to test the information is correct before moving on
 for house in houses:
     plt.scatter(house.bl[0], house.bl[1], s=1)
     plt.scatter(house.tr[0], house.tr[1], s=1)
+    plt.gca().text(house.tr[0], house.tr[1], str(house.number))
 
 plt.scatter(pub.bl[0], pub.bl[1], s=1, c="r")
 plt.scatter(pub.tr[0], pub.tr[1], s=1, c='r')
+plt.gca().text(pub.tr[0], pub.tr[1], 'Pub', color = 'r')
+plt.title("Bottom left and top right points of each building")
 plt.show()
 plt.close()
 
@@ -137,13 +121,8 @@ while drunks:
     for drunk in drunks:
         drunk.walk()
         drunk.add_to_map()
-print(f"total number of iterations for all drunks to get home: {total}")
+print(f"Total number of iterations for all drunks to get home: {total}")
 
-# # To check the add to map worked 
-# for row in townmap:
-#     for value in row:
-#         if value != 0:
-#             print(value)
 
 # Plot the heat map using a numpy array version of townmap
 # The logarithm of townmap is calculated to scale the values resulting in a more visually appealing map 
@@ -152,6 +131,7 @@ plt.imshow(scaledmap, cmap='hot', interpolation='nearest', origin="lower")
 for house in houses:
     house.draw(number=False)
 pub.draw(text=False)
+plt.title("Density plot of the paths taken by drunks from the pub to their door")
 plt.show()
 
 # Write out townmap to a csv file 
