@@ -71,6 +71,11 @@ Tests are provided as doctests
 
 ### How to test 
 
+
+```
+python -m doctest drunkmodel.py
+```
+
 ```
 python -m doctest buildingclass.py
 ```
