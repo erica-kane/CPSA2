@@ -102,8 +102,8 @@ def create_empty(xlen, ylen):
     """Creating a 2D list of 0s with attributable lengths.
 
     Args:
-        xlen (number): desired x length 
-        ylen (number): desired y length 
+        xlen (number): desired x length (values)
+        ylen (number): desired y length (rows)
 
     Returns:
         2D list: 2D list with 0s as values
