@@ -12,13 +12,30 @@ houses_info_dict = {}
 pub_info = []
 houses = []
 drunks = []
-townmap = []
 
-# Read in town plan
-f = open('drunk.plan.txt', newline = '')
-reader = csv.reader(f, quoting = csv.QUOTE_NONNUMERIC)
-plan = list(reader)
-f.close()
+def read_plan(name):
+    """Reads a text file with csv format and returns a 2D list.
+
+    Args:
+        name (string): path to file to be read in
+
+    Returns:
+        2D list: parsed values
+    
+    >>> p = read_plan('drunk.plan.txt')
+    >>> len(p)
+    300
+    >>> len(p[0])
+    300
+    """
+
+    f = open(name, newline = '')
+    reader = csv.reader(f, quoting = csv.QUOTE_NONNUMERIC)
+    plan = list(reader)
+    f.close()
+    return plan
+
+plan = read_plan("drunk.plan.txt")
 
 # Find and save dimensions of plan 
 y_len = len(plan)
@@ -80,6 +97,33 @@ plt.axis('square')
 plt.show()
 plt.close()
 
+# Create empty array for heat map which has the same dimensions as plan
+def create_empty(xlen, ylen):
+    """Creating a 2D list of 0s with attributable lengths.
+
+    Args:
+        xlen (number): desired x length 
+        ylen (number): desired y length 
+
+    Returns:
+        2D list: 2D list with 0s as values
+
+    >>> e = create_empty(67, 24)
+    >>> len(e)
+    24
+    >>> len(e[0])
+    67
+    """
+    emptymap = []
+    for num in range(ylen):
+        maprow = []
+        for num in range(xlen):
+            maprow.append(0)
+        emptymap.append(maprow)
+    return emptymap
+
+townmap = create_empty(x_len, y_len)
+
 
 # Create the drunks
 for house in houses:
@@ -106,13 +150,6 @@ for house in houses:
 
 # plt.show()
 
-
-# Create empty array for heat map which has the same dimensions as plan
-for num in range(y_len):
-    maprow = []
-    for num in range(x_len):
-        maprow.append(0)
-    townmap.append(maprow)
 
 # moving drunks and adding to townmap for each movement, for as long as there are drunks not home 
 # pritning total to check how many iterations it took 
