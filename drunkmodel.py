@@ -5,13 +5,6 @@ import drunkclass
 import buildingclass
 import numpy as np
 
-# Create all objects that will need to be used in further code 
-plan = []
-houses_info = []
-houses_info_dict = {}
-pub_info = []
-houses = []
-drunks = []
 
 def read_plan(name):
     """Reads a text file with csv format and returns a 2D list.
@@ -49,6 +42,7 @@ plt.close()
 
 # Getting coordinates of each house point from the plan, save to a nested list 
 # The list will contain a set of coordinates for each point on the house, followed by the house number
+houses_info = []
 for y, row in enumerate(plan):
     for x, value in enumerate(row):
         if value >= 10.0 and value <= 250.0:
@@ -57,6 +51,7 @@ for y, row in enumerate(plan):
 
 # Setting 'house numbers' as the keys of a dictionary, and empty lists as values
 # Keys must be uniqie, so this solves problem of eliminating repeat house numbers and saving as individual values per house 
+houses_info_dict = {}
 for row in houses_info:
     houses_info_dict[row[2]] = []
     
@@ -68,6 +63,7 @@ for row in houses_info:
 
 # Getting coordinates of pub point from the 'plan' and appending to a list of tuples 
 # A dictionary is not needed as there is only one pub, so no associated number is necessary
+pub_info = []
 for y, row in enumerate(plan):
     for x, value in enumerate(row):
         if value == 1.0:
@@ -77,6 +73,7 @@ len(pub_info)
 
 
 # Make the houses 
+houses = []
 for number, coords in houses_info_dict.items():
     houses.append(buildingclass.House(number, coords))
 
@@ -97,7 +94,6 @@ plt.axis('square')
 plt.show()
 plt.close()
 
-# Create empty array for heat map which has the same dimensions as plan
 def create_empty(xlen, ylen):
     """Creating a 2D list of 0s with attributable lengths.
 
@@ -126,6 +122,7 @@ townmap = create_empty(x_len, y_len)
 
 
 # Create the drunks
+drunks = []
 for house in houses:
     drunks.append(drunkclass.Drunk(pub.door[0], pub.door[1], drunks, plan, house, townmap))
 
