@@ -1,5 +1,10 @@
 # Planning For Drunks 
 
+
+_Hosted on [GitHub](https://github.com/erica-kane/CPSA2)_
+
+
+
 ## Introduction 
 
 This practical will run a model that will produce a heat map representing the paths 25 
@@ -89,3 +94,5 @@ python -m doctest drunkclass.py
 
 This project is licensed under MIT license.
 See license in files.
+
+
